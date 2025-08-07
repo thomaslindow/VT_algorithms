@@ -95,7 +95,6 @@
         .algorithm-interface {
             display: none;
             background: #f8f9fa;
-            border: 3px solid #e9ecef;
             border-radius: 12px;
             padding: 30px;
             margin-top: 30px;
@@ -106,32 +105,19 @@
         }
 
         .step-header {
-            background: #f8f9fa;
-            color: #2c3e50;
+            background: #3498db;
+            color: white;
             padding: 20px;
-            border: 2px solid #e9ecef;
             border-radius: 8px;
             margin-bottom: 25px;
             text-align: center;
         }
 
-        .step-header h2 {
-            margin: 0 0 10px 0;
-            color: #2c3e50;
-            font-size: 1.8em;
-        }
-
-        .step-info {
-            color: #2c3e50;
-            font-size: 1.1em;
-            margin: 0;
-        }
-
         .step-content {
-            background: #f8f9fa;
-            border: 3px solid #e9ecef;
+            background: white;
             padding: 25px;
             border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 25px;
         }
 
@@ -144,26 +130,15 @@
         }
 
         .criteria {
-            background: #f8f9fa;
-            border: 3px solid #e9ecef;
+            background: #ecf0f1;
             padding: 15px;
             border-radius: 6px;
             margin: 15px 0;
+            border-left: 4px solid #3498db;
         }
 
         .criteria h4 {
             margin: 0 0 10px 0;
-            color: #2c3e50;
-        }
-
-        .criteria ul {
-            color: #2c3e50;
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .criteria li {
-            margin-bottom: 8px;
             color: #2c3e50;
         }
 
@@ -186,32 +161,32 @@
         }
 
         .btn-yes {
-            background: #e74c3c;
+            background: #95a5a6;
             color: white;
         }
 
         .btn-yes:hover {
-            background: #c0392b;
+            background: #95a5a6;
             transform: translateY(-2px);
         }
 
         .btn-no {
-            background: #2ecc71;
+            background: #95a5a6;
             color: white;
         }
 
         .btn-no:hover {
-            background: #27ae60;
+            background: #95a5a6;
             transform: translateY(-2px);
         }
 
         .btn-skip {
-            background: #f39c12;
+            background: #95a5a6;
             color: white;
         }
 
         .btn-skip:hover {
-            background: #e67e22;
+            background: #95a5a6;
             transform: translateY(-2px);
         }
 
@@ -225,36 +200,29 @@
             transform: translateY(-2px);
         }
 
-        .result {
-            background: #f8f9fa;
-            border: 3px solid #e9ecef;
-            color: #2c3e50;
+        .result { background: #f8f9fa; color: #2c3e50;
+            color: white;
             padding: 30px;
             border-radius: 12px;
             text-align: center;
             margin-top: 25px;
         }
 
-        .result.vt {
-            background: #f8f9fa;
-            border-color: #e74c3c;
+        .result.vt { background: #ffe6e6;
         }
 
-        .result.svt {
-            background: #f8f9fa;
-            border-color: #2ecc71;
+        .result.svt { background: #e6ffe6;
         }
 
         .result h2 {
             margin: 0 0 15px 0;
             font-size: 2.5em;
-            color: #2c3e50;
         }
 
         .result p {
             margin: 0;
             font-size: 1.2em;
-            color: #2c3e50;
+            opacity: 0.9;
         }
 
         .navigation {
@@ -265,7 +233,7 @@
         }
 
         .progress {
-            background: #e9ecef;
+            background: #ecf0f1;
             height: 8px;
             border-radius: 4px;
             margin: 20px 0;
@@ -273,10 +241,16 @@
         }
 
         .progress-bar {
-            background: #2c3e50;
+            background: #f4f6f8;
             height: 100%;
             transition: width 0.3s ease;
             border-radius: 4px;
+        }
+
+        .step-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
         }
 
         @media (max-width: 768px) {
@@ -373,7 +347,19 @@
                 </div>
             </div>
 
-            <!-- Griffith Algorithm Interface -->
+            <!-- Vereckei Algorithm Interface -->
+            <div id="vereckei" class="algorithm-interface">
+                <div class="step-header">
+                    <h2>Vereckei aVR Algorithm</h2>
+                    <div class="step-info">Step <span id="vereckei-step">1</span> of 4</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="vereckei-progress" style="width: 25%"></div>
+                </div>
+                <div id="vereckei-content" class="step-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
             <div id="griffith" class="algorithm-interface">
                 <div class="step-header">
                     <h2>Griffith Algorithm</h2>
@@ -629,7 +615,7 @@
 
             let skippedInfo = '';
             if (skippedSteps.length > 0) {
-                skippedInfo = `<p style="margin-top: 15px; color: #2c3e50;">Note: Steps ${skippedSteps.join(', ')} were skipped</p>`;
+                skippedInfo = `<p style="margin-top: 15px; opacity: 0.8;">Note: Steps ${skippedSteps.join(', ')} were skipped</p>`;
             }
 
             contentDiv.innerHTML = `
