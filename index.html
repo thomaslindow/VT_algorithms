@@ -15,7 +15,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -48,8 +48,8 @@
 
         .algorithm-selection {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
             margin-bottom: 40px;
         }
 
@@ -61,6 +61,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .algorithm-card:hover {
@@ -75,7 +79,7 @@
         }
 
         .algorithm-card h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 15px 0;
             color: #2c3e50;
             font-size: 1.3em;
         }
@@ -84,12 +88,29 @@
             font-size: 0.9em;
             color: #2c3e50;
             margin-bottom: 15px;
+            font-weight: 600;
+            background: #e9ecef;
+            padding: 8px;
+            border-radius: 6px;
         }
 
         .algorithm-card .description {
             font-size: 0.9em;
             color: #2c3e50;
             line-height: 1.4;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        .algorithm-card .reference {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            line-height: 1.3;
+            margin-top: auto;
+            font-style: italic;
+            text-align: left;
+            border-top: 1px solid #dee2e6;
+            padding-top: 15px;
         }
 
         .algorithm-interface {
@@ -186,38 +207,35 @@
         }
 
         .btn-yes {
-            background: #f8f9fa;
-            color: #2c3e50;
-            border: 3px solid #e9ecef;
+            background: #34495e;
+            color: white;
+            border: 3px solid #2c3e50;
         }
 
         .btn-yes:hover {
-            background: #e9ecef;
-            border-color: #2c3e50;
+            background: #2c3e50;
             transform: translateY(-2px);
         }
 
         .btn-no {
-            background: #f8f9fa;
-            color: #2c3e50;
-            border: 3px solid #e9ecef;
+            background: #7f8c8d;
+            color: white;
+            border: 3px solid #95a5a6;
         }
 
         .btn-no:hover {
-            background: #e9ecef;
-            border-color: #2c3e50;
+            background: #95a5a6;
             transform: translateY(-2px);
         }
 
         .btn-skip {
-            background: #f8f9fa;
+            background: #bdc3c7;
             color: #2c3e50;
-            border: 3px solid #e9ecef;
+            border: 3px solid #ecf0f1;
         }
 
         .btn-skip:hover {
-            background: #e9ecef;
-            border-color: #2c3e50;
+            background: #ecf0f1;
             transform: translateY(-2px);
         }
 
@@ -242,23 +260,23 @@
         }
 
         .result.vt {
-            background: #f8f9fa;
+            background: #fdedec;
             border-color: #e74c3c;
         }
 
         .result.svt {
-            background: #f8f9fa;
+            background: #eafaf1;
             border-color: #2ecc71;
         }
 
         .result.pxt {
-            background: #f8f9fa;
+            background: #fef9e7;
             border-color: #f39c12;
         }
 
         .result h2 {
             margin: 0 0 15px 0;
-            font-size: 2.5em;
+            font-size: 1.5em;
             color: #2c3e50;
         }
 
@@ -290,6 +308,21 @@
             border-radius: 4px;
         }
 
+        /* Hide algorithm selection when an algorithm is active */
+        .algorithm-selection.hidden {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .algorithm-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .algorithm-card {
+                min-height: auto;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -297,10 +330,6 @@
             
             .main-content {
                 padding: 20px;
-            }
-            
-            .algorithm-selection {
-                grid-template-columns: 1fr;
             }
             
             .button-group {
@@ -322,30 +351,33 @@
         </div>
 
         <div class="main-content">
-            <div id="algorithmSelection" class="algorithm-selection">
+            <div id="algorithm-selection" class="algorithm-selection">
                 <div class="algorithm-card" onclick="selectAlgorithm('brugada')">
-                    <h3>Brugada Algorithm</h3>
-                    <div class="stats">Sensitivity: 89% | Specificity: 59%</div>
-                    <div class="description">Most commonly used 5-step sequential approach with comprehensive morphology analysis</div>
+                    <div>
+                        <h3>Brugada Algorithm</h3>
+                        <div class="stats">Sensitivity: 89% | Specificity: 59%</div>
+                        <div class="description">4-step sequential approach with morphology analysis</div>
+                    </div>
+                    <div class="reference">Brugada et al. A new approach to the differential diagnosis of a regular tachycardia with a wide QRS complex. Circulation. 1991 May;83(5):1649-59</div>
                 </div>
 
                 <div class="algorithm-card" onclick="selectAlgorithm('rwpt')">
-                    <h3>RWPT Criterion</h3>
-                    <div class="stats">Sensitivity: 60% | Specificity: 83%</div>
-                    <div class="description">Ultra-simple single measurement approach using R-wave peak time in lead II</div>
+                    <div>
+                        <h3>RWPT Criterion</h3>
+                        <div class="stats">Sensitivity: 60% | Specificity: 83%</div>
+                        <div class="description">Single-measurement approach using R-wave peak time in lead II</div>
+                    </div>
+                    <div class="reference">Pava et al. R-wave peak time at DII: a new criterion to differentiate between wide complex QRS tachycardias. Heart Rhythm. 2010;7:922–6.</div>
                 </div>
 
                 <div class="algorithm-card" onclick="selectAlgorithm('modified_brugada')">
-                    <h3>Modified Brugada Algorithm</h3>
-                    <div class="stats">Sensitivity: 92% | Specificity: 85%</div>
-                    <div class="description">Differentiates VT from pre-excited tachycardia using 4-step approach</div>
+                    <div>
+                        <h3>Modified Brugada Algorithm</h3>
+                        <div class="stats">Sensitivity: 92% | Specificity: 85%</div>
+                        <div class="description">Differentiates VT from pre-excited tachycardia using a 4-step approach</div>
+                    </div>
+                    <div class="reference">Vereckei et al. The Application of a New, Modified Algorithm for the Differentiation of Regular Ventricular and Pre-Excited Tachycardias. Heart Lung Circ. 2023 Jun;32(6):719-725.</div>
                 </div>
-            </div>
-
-            <div class="disclaimer" style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 30px; font-size: 0.9em; color: #2c3e50; line-height: 1.5;">
-                <p style="margin: 0 0 15px 0; font-weight: 600;">Disclaimer:</p>
-                <p style="margin: 0 0 15px 0;">This tool is intended for use by qualified healthcare professionals. Clinical decisions should always incorporate multiple factors and professional medical judgment. The webpage developer assumes no responsibility for clinical decisions made using this webpage.</p>
-                <p style="margin: 0;">Please report any suggestions for improvements, errors, bugs or inconsistencies to <a href="mailto:thomas.a.lindow@gmail.com" style="color: #2c3e50; text-decoration: underline;">thomas.a.lindow@gmail.com</a></p>
             </div>
 
             <!-- Brugada Algorithm Interface -->
@@ -376,33 +408,6 @@
                 </div>
             </div>
 
-            <!-- Vereckei Algorithm Interface -->
-            <div id="vereckei" class="algorithm-interface">
-                <div class="step-header">
-                    <h2>Vereckei aVR Algorithm</h2>
-                    <div class="step-info">Step <span id="vereckei-step">1</span> of 4</div>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" id="vereckei-progress" style="width: 25%"></div>
-                </div>
-                <div id="vereckei-content" class="step-content">
-                    <!-- Dynamic content will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Griffith Algorithm Interface -->
-            <div id="griffith" class="algorithm-interface">
-                <div class="step-header">
-                    <h2>Griffith Algorithm</h2>
-                    <div class="step-info">Step <span id="griffith-step">1</span> of 2</div>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" id="griffith-progress" style="width: 50%"></div>
-                </div>
-                <div id="griffith-content" class="step-content">
-                    <!-- Dynamic content will be loaded here -->
-                </div>
-            </div>
             <!-- Modified Brugada Algorithm Interface -->
             <div id="modified_brugada" class="algorithm-interface">
                 <div class="step-header">
@@ -416,6 +421,12 @@
                     <!-- Dynamic content will be loaded here -->
                 </div>
             </div>
+        </div>
+
+        <div class="disclaimer" style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; padding: 20px; margin: 30px auto; max-width: 1200px; font-size: 0.9em; color: #2c3e50; line-height: 1.5;">
+            <p style="margin: 0 0 15px 0; font-weight: 600;">Disclaimer:</p>
+            <p style="margin: 0 0 15px 0;">This tool is intended for use by qualified healthcare professionals. Clinical decisions should always incorporate multiple factors and professional medical judgment. The webpage developer assumes no responsibility for clinical decisions made using this webpage.</p>
+            <p style="margin: 0;">Please report any suggestions for improvements, errors, bugs or inconsistencies to <a href="mailto:thomas.a.lindow@gmail.com" style="color: #2c3e50; text-decoration: underline;">thomas.a.lindow@gmail.com</a></p>
         </div>
     </div>
 
@@ -431,16 +442,15 @@
                     {
                         question: "Is positive or negative concordance (no rS complexes) present throughout all chest leads (V1-V6)?",
                         criteria: [
-                            "Look for complete concordance in precordial leads",
                             "All positive R waves OR all negative QS complexes"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
                     },
                     {
-                        question: "Is any RS interval >100 ms in the chest leads?",
+                        question: "Does the RS interval exceed 100 ms in any of the chest leads?",
                         criteria: [
-                            "Measure time from R-wave onset to S-wave nadir"
+                            "Measure from R-wave onset to S-wave nadir"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
@@ -449,7 +459,6 @@
                         question: "Is there evidence of AV dissociation?",
                         criteria: [
                             "P and QRS complexes at different rates",
-                            "P waves are often superimposed on QRS complexes and may be difficult to discern",
                             "Check for capture and fusion beats"
                         ],
                         yesResult: "VT",
@@ -479,7 +488,7 @@
                     {
                         question: "Is the R-Wave Peak Time ≥50ms in Lead II?",
                         criteria: [
-                            "Measure from QRS onset to peak R-wave or nadir of Q-wave"
+                            "Measure from QRS onset to peak R or nadir Q"
                         ],
                         yesResult: "VT",
                         noResult: "SVT"
@@ -514,7 +523,6 @@
                     {
                         question: "Is there a QR complex in one or more of leads V2-V6?",
                         criteria: [
-                            "Look for QR morphology specifically in the precordial leads V2 through V6",
                             "QR pattern suggests ventricular origin"
                         ],
                         yesResult: "VT",
@@ -545,6 +553,9 @@
                 console.error('Algorithm not found:', algorithmName);
                 return;
             }
+
+            // Hide algorithm selection
+            document.getElementById('algorithm-selection').classList.add('hidden');
 
             // Hide all algorithm interfaces
             document.querySelectorAll('.algorithm-interface').forEach(el => {
@@ -660,28 +671,52 @@
 
         function showFinalResult() {
             const contentDiv = document.getElementById(currentAlgorithm + '-content');
-            let resultClass, resultText, confidence;
+            let resultClass, resultText, confidence, reference;
 
             // Check if all steps were skipped
             if (skippedSteps.length === algorithms[currentAlgorithm].totalSteps) {
                 resultClass = '';
                 resultText = 'Inconclusive';
                 confidence = 'All steps skipped - unable to determine diagnosis';
+                reference = '';
             } else if (yesAnswers.length > 0) {
                 // Any "Yes" answer = VT
                 resultClass = 'vt';
                 resultText = 'Ventricular Tachycardia';
-                confidence = 'High likelihood of ventricular tachycardia';
+                
+                if (currentAlgorithm === 'brugada') {
+                    confidence = 'High likelihood of VT (LR+ 2.18)<sup>a</sup>';
+                    reference = '<sup>a</sup> Jastrzebski et al. Comparison of five electrocardiographic methods for differentiation of wide QRS-complex tachycardias. Europace. 2012 Aug;14(8):1165-71.';
+                } else if (currentAlgorithm === 'rwpt') {
+                    confidence = 'High likelihood of VT (LR+ 3.46)<sup>a</sup>';
+                    reference = '<sup>a</sup> Jastrzebski et al. Comparison of five electrocardiographic methods for differentiation of wide QRS-complex tachycardias. Europace. 2012 Aug;14(8):1165-71.';
+                } else if (currentAlgorithm === 'modified_brugada') {
+                    confidence = 'High likelihood of VT (LR+ 6.1)<sup>b</sup>';
+                    reference = '<sup>b</sup> Vereckei et al. The Application of a New, Modified Algorithm for the Differentiation of Regular Ventricular and Pre-Excited Tachycardias. Heart Lung Circ. 2023 Jun;32(6):719-725.';
+                } else {
+                    confidence = 'High likelihood of ventricular tachycardia';
+                    reference = '';
+                }
             } else {
                 // No "Yes" answers
+                resultClass = 'svt';
+                
                 if (currentAlgorithm === 'modified_brugada') {
-                    resultClass = 'svt';
                     resultText = 'Supraventricular Tachycardia';
-                    confidence = 'High likelihood of supraventricular tachycardia, pre-excited SVT possible';
+                    confidence = 'High likelihood of SVT (LR- 0.09)<sup>b</sup>';
+                    reference = '<sup>b</sup> Vereckei et al. The Application of a New, Modified Algorithm for the Differentiation of Regular Ventricular and Pre-Excited Tachycardias. Heart Lung Circ. 2023 Jun;32(6):719-725.';
+                } else if (currentAlgorithm === 'brugada') {
+                    resultText = 'Supraventricular Tachycardia';
+                    confidence = 'High likelihood of SVT (LR- 0.18)<sup>a</sup>';
+                    reference = '<sup>a</sup> Jastrzebski et al. Comparison of five electrocardiographic methods for differentiation of wide QRS-complex tachycardias. Europace. 2012 Aug;14(8):1165-71.';
+                } else if (currentAlgorithm === 'rwpt') {
+                    resultText = 'Supraventricular Tachycardia';
+                    confidence = 'High likelihood of SVT (LR- 0.48)<sup>a</sup>';
+                    reference = '<sup>a</sup> Jastrzebski et al. Comparison of five electrocardiographic methods for differentiation of wide QRS-complex tachycardias. Europace. 2012 Aug;14(8):1165-71.';
                 } else {
-                    resultClass = 'svt';
                     resultText = 'Supraventricular Tachycardia';
                     confidence = 'High likelihood of supraventricular tachycardia';
+                    reference = '';
                 }
             }
 
@@ -695,12 +730,18 @@
                 yesInfo = `<p style="margin-top: 15px; color: #2c3e50;">Positive criteria found in step(s): ${yesAnswers.join(', ')}</p>`;
             }
 
+            let referenceInfo = '';
+            if (reference) {
+                referenceInfo = `<p style="margin-top: 20px; color: #2c3e50; font-size: 0.9em; font-style: italic; border-top: 1px solid #dee2e6; padding-top: 15px;">${reference}</p>`;
+            }
+
             contentDiv.innerHTML = `
                 <div class="result ${resultClass}">
                     <h2>${resultText}</h2>
                     <p>${confidence}</p>
                     ${yesInfo}
                     ${skippedInfo}
+                    ${referenceInfo}
                 </div>
                 <div class="navigation" style="justify-content: center; margin-top: 30px;">
                     <button class="btn btn-back" onclick="resetAlgorithm()" style="margin-right: 15px;">Try Again</button>
@@ -740,6 +781,9 @@
         }
 
         function showAlgorithmSelection() {
+            // Show algorithm selection
+            document.getElementById('algorithm-selection').classList.remove('hidden');
+
             // Hide all algorithm interfaces
             document.querySelectorAll('.algorithm-interface').forEach(el => {
                 el.classList.remove('active');
