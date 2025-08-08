@@ -326,19 +326,13 @@
                 <div class="algorithm-card" onclick="selectAlgorithm('brugada')">
                     <h3>Brugada Algorithm</h3>
                     <div class="stats">Sensitivity: 89% | Specificity: 59%</div>
-                    <div class="description">4-step sequential approach with comprehensive morphology analysis</div>
+                    <div class="description">Most commonly used 5-step sequential approach with comprehensive morphology analysis</div>
                 </div>
 
                 <div class="algorithm-card" onclick="selectAlgorithm('rwpt')">
                     <h3>RWPT Criterion</h3>
                     <div class="stats">Sensitivity: 60% | Specificity: 83%</div>
-                    <div class="description">Single-measurement approach using R-wave peak time in lead II</div>
-                </div>
-
-                <div class="algorithm-card" onclick="selectAlgorithm('griffith')">
-                    <h3>Griffith Algorithm</h3>
-                    <div class="stats">Sensitivity: 94% | Specificity: 40%</div>
-                    <div class="description">VT as default diagnosis unless proven SVT</div>
+                    <div class="description">Ultra-simple single measurement approach using R-wave peak time in lead II</div>
                 </div>
 
                 <div class="algorithm-card" onclick="selectAlgorithm('modified_brugada')">
@@ -346,6 +340,12 @@
                     <div class="stats">Sensitivity: 92% | Specificity: 85%</div>
                     <div class="description">Differentiates VT from pre-excited tachycardia using 4-step approach</div>
                 </div>
+            </div>
+
+            <div class="disclaimer" style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 30px; font-size: 0.9em; color: #2c3e50; line-height: 1.5;">
+                <p style="margin: 0 0 15px 0; font-weight: 600;">Disclaimer:</p>
+                <p style="margin: 0 0 15px 0;">This tool is intended for use by qualified healthcare professionals. Clinical decisions should always incorporate multiple factors and professional medical judgment. The webpage developer assumes no responsibility for clinical decisions made using this webpage.</p>
+                <p style="margin: 0;">Please report any suggestions for improvements, errors, bugs or inconsistencies to <a href="mailto:thomas.a.lindow@gmail.com" style="color: #2c3e50; text-decoration: underline;">thomas.a.lindow@gmail.com</a></p>
             </div>
 
             <!-- Brugada Algorithm Interface -->
@@ -432,15 +432,15 @@
                         question: "Is positive or negative concordance (no rS complexes) present throughout all chest leads (V1-V6)?",
                         criteria: [
                             "Look for complete concordance in precordial leads",
-                            "All positive R complexes OR all negative QS complexes"
+                            "All positive R waves OR all negative QS complexes"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
                     },
                     {
-                        question: "Does the RS interval exceed 100 ms in any of the chest leads?",
+                        question: "Is any RS interval >100 ms in the chest leads?",
                         criteria: [
-                            "Measure from R-wave onset to S-wave nadir"
+                            "Measure time from R-wave onset to S-wave nadir"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
@@ -449,7 +449,7 @@
                         question: "Is there evidence of AV dissociation?",
                         criteria: [
                             "P and QRS complexes at different rates",
-                            "P waves often superimposed on QRS complexes",
+                            "P waves are often superimposed on QRS complexes and may be difficult to discern",
                             "Check for capture and fusion beats"
                         ],
                         yesResult: "VT",
@@ -479,39 +479,10 @@
                     {
                         question: "Is the R-Wave Peak Time ≥50ms in Lead II?",
                         criteria: [
-                            "From QRS onset to R peak or nadir Q"
+                            "Measure from QRS onset to peak R-wave or nadir of Q-wave"
                         ],
                         yesResult: "VT",
                         noResult: "SVT"
-                    }
-                ]
-            },
-            griffith: {
-                name: "Griffith Algorithm",
-                reference: "Griffith MJ, Garratt CJ, Mounsey P, Camm AJ. Ventricular tachycardia as default diagnosis in broad complex tachycardia. Lancet. 1994 Feb 12;343(8894):386-8. doi: 10.1016/s0140-6736(94)91223-8",
-                totalSteps: 2,
-                currentStep: 1,
-                steps: [
-                    {
-                        question: "Is there AV dissociation?",
-                        criteria: [
-                            "P and QRS complexes at different rates",
-                            "P waves are often superimposed on QRS complexes",
-                            "Check for capture and fusion beats"
-                        ],
-                        yesResult: "VT",
-                        noResult: "continue"
-                    },
-                    {
-                        question: "Does the QRS match typical bundle branch block pattern?",
-                        criteria: [
-                            "For LBBB: rS/QS in V1&V2, S-nadir <70ms, R in V6",
-                            "For RBBB: rSR' in V1, RS in V6, R>S in V6",
-                            "ALL criteria must be met for SVT diagnosis",
-                            "If criteria not met → VT"
-                        ],
-                        yesResult: "SVT",
-                        noResult: "VT"
                     }
                 ]
             },
@@ -525,7 +496,7 @@
                         question: "Is there evidence of AV dissociation?",
                         criteria: [
                             "P and QRS complexes at different rates",
-                            "P waves are often superimposed on QRS complexes",
+                            "P waves are often superimposed on QRS complexes and may be difficult to discern",
                             "Check for capture and fusion beats"
                         ],
                         yesResult: "VT",
@@ -543,7 +514,7 @@
                     {
                         question: "Is there a QR complex in one or more of leads V2-V6?",
                         criteria: [
-
+                            "Look for QR morphology specifically in the precordial leads V2 through V6",
                             "QR pattern suggests ventricular origin"
                         ],
                         yesResult: "VT",
