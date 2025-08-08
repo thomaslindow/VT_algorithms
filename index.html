@@ -251,6 +251,11 @@
             border-color: #2ecc71;
         }
 
+        .result.pxt {
+            background: #f8f9fa;
+            border-color: #f39c12;
+        }
+
         .result h2 {
             margin: 0 0 15px 0;
             font-size: 2.5em;
@@ -321,19 +326,25 @@
                 <div class="algorithm-card" onclick="selectAlgorithm('brugada')">
                     <h3>Brugada Algorithm</h3>
                     <div class="stats">Sensitivity: 89% | Specificity: 59%</div>
-                    <div class="description">Most commonly used 5-step sequential approach with comprehensive morphology analysis</div>
+                    <div class="description">4-step sequential approach with comprehensive morphology analysis</div>
                 </div>
 
                 <div class="algorithm-card" onclick="selectAlgorithm('rwpt')">
                     <h3>RWPT Criterion</h3>
                     <div class="stats">Sensitivity: 60% | Specificity: 83%</div>
-                    <div class="description">Ultra-simple single measurement approach using R-wave peak time in lead II</div>
+                    <div class="description">Single-measurement approach using R-wave peak time in lead II</div>
                 </div>
 
                 <div class="algorithm-card" onclick="selectAlgorithm('griffith')">
                     <h3>Griffith Algorithm</h3>
                     <div class="stats">Sensitivity: 94% | Specificity: 40%</div>
-                    <div class="description">Reverse logic approach with VT as default diagnosis unless proven SVT</div>
+                    <div class="description">VT as default diagnosis unless proven SVT</div>
+                </div>
+
+                <div class="algorithm-card" onclick="selectAlgorithm('modified_brugada')">
+                    <h3>Modified Brugada Algorithm</h3>
+                    <div class="stats">Sensitivity: 92% | Specificity: 85%</div>
+                    <div class="description">Differentiates VT from pre-excited tachycardia using 4-step approach</div>
                 </div>
             </div>
 
@@ -341,10 +352,10 @@
             <div id="brugada" class="algorithm-interface">
                 <div class="step-header">
                     <h2>Brugada Algorithm</h2>
-                    <div class="step-info">Step <span id="brugada-step">1</span> of 5</div>
+                    <div class="step-info">Step <span id="brugada-step">1</span> of 4</div>
                 </div>
                 <div class="progress">
-                    <div class="progress-bar" id="brugada-progress" style="width: 20%"></div>
+                    <div class="progress-bar" id="brugada-progress" style="width: 25%"></div>
                 </div>
                 <div id="brugada-content" class="step-content">
                     <!-- Dynamic content will be loaded here -->
@@ -392,6 +403,19 @@
                     <!-- Dynamic content will be loaded here -->
                 </div>
             </div>
+            <!-- Modified Brugada Algorithm Interface -->
+            <div id="modified_brugada" class="algorithm-interface">
+                <div class="step-header">
+                    <h2>Modified Brugada Algorithm</h2>
+                    <div class="step-info">Step <span id="modified_brugada-step">1</span> of 4</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="modified_brugada-progress" style="width: 25%"></div>
+                </div>
+                <div id="modified_brugada-content" class="step-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -400,22 +424,23 @@
         const algorithms = {
             brugada: {
                 name: "Brugada Algorithm",
-                totalSteps: 5,
+                reference: "Brugada P, Brugada J, Mont L, Smeets J, Andries EW. A new approach to the differential diagnosis of a regular tachycardia with a wide QRS complex. Circulation. 1991 May;83(5):1649-59",
+                totalSteps: 4,
                 currentStep: 1,
                 steps: [
                     {
                         question: "Is positive or negative concordance (no rS complexes) present throughout all chest leads (V1-V6)?",
                         criteria: [
                             "Look for complete concordance in precordial leads",
-                            "All positive R waves OR all negative QS complexes"
+                            "All positive R complexes OR all negative QS complexes"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
                     },
                     {
-                        question: "Is any RS interval >100 ms in the chest leads?",
+                        question: "Does the RS interval exceed 100 ms in any of the chest leads?",
                         criteria: [
-                            "Measure time from R-wave onset to S-wave nadir"
+                            "Measure from R-wave onset to S-wave nadir"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
@@ -424,7 +449,7 @@
                         question: "Is there evidence of AV dissociation?",
                         criteria: [
                             "P and QRS complexes at different rates",
-                            "P waves are often superimposed on QRS complexes and may be difficult to discern",
+                            "P waves often superimposed on QRS complexes",
                             "Check for capture and fusion beats"
                         ],
                         yesResult: "VT",
@@ -442,27 +467,19 @@
                         ],
                         yesResult: "VT",
                         noResult: "continue"
-                    },
-                    {
-                        question: "Default diagnosis reached",
-                        criteria: [
-                            "No VT criteria met in previous steps",
-                            "Diagnosis defaults to SVT"
-                        ],
-                        yesResult: "SVT",
-                        noResult: "SVT"
                     }
                 ]
             },
             rwpt: {
                 name: "R-Wave Peak Time Criterion",
+                reference: "Pava LF, Parafán P, Badiel M, et al. R-wave peak time at DII: a new criterion to differentiate between wide complex QRS tachycardias. Heart Rhythm. 2010;7:922–6. doi: 10.1016/j.hrthm.2010.03.001",
                 totalSteps: 1,
                 currentStep: 1,
                 steps: [
                     {
                         question: "Is the R-Wave Peak Time ≥50ms in Lead II?",
                         criteria: [
-                            "Measure from QRS onset to peak R-wave or nadir of Q-wave"
+                            "From QRS onset to R peak or nadir Q"
                         ],
                         yesResult: "VT",
                         noResult: "SVT"
@@ -471,6 +488,7 @@
             },
             griffith: {
                 name: "Griffith Algorithm",
+                reference: "Griffith MJ, Garratt CJ, Mounsey P, Camm AJ. Ventricular tachycardia as default diagnosis in broad complex tachycardia. Lancet. 1994 Feb 12;343(8894):386-8. doi: 10.1016/s0140-6736(94)91223-8",
                 totalSteps: 2,
                 currentStep: 1,
                 steps: [
@@ -478,9 +496,8 @@
                         question: "Is there AV dissociation?",
                         criteria: [
                             "P and QRS complexes at different rates",
-                            "P waves are often superimposed on QRS complexes and may be difficult to discern",
-                            "Check for capture and fusion beats",
-                            "Default assumption is VT unless proven SVT"
+                            "P waves are often superimposed on QRS complexes",
+                            "Check for capture and fusion beats"
                         ],
                         yesResult: "VT",
                         noResult: "continue"
@@ -497,13 +514,67 @@
                         noResult: "VT"
                     }
                 ]
+            },
+            modified_brugada: {
+                name: "Modified Brugada Algorithm",
+                reference: "Vereckei A, Simon A, Szénási G, Miller JM. The Application of a New, Modified Algorithm for the Differentiation of Regular Ventricular and Pre-Excited Tachycardias. Heart Lung Circ. 2023 Jun;32(6):719-725. doi: 10.1016/j.hlc.2023.03.016",
+                totalSteps: 4,
+                currentStep: 1,
+                steps: [
+                    {
+                        question: "Is there evidence of AV dissociation?",
+                        criteria: [
+                            "P and QRS complexes at different rates",
+                            "P waves are often superimposed on QRS complexes",
+                            "Check for capture and fusion beats"
+                        ],
+                        yesResult: "VT",
+                        noResult: "continue"
+                    },
+                    {
+                        question: "Is the onset of the QRS complex in aVR positive, AND the area above the baseline of the QRS complex greater than the area below the baseline?",
+                        criteria: [
+                            "In Cabrera lead system: Is the onset of the QRS complex in -aVR negative, AND the area below the baseline of the QRS greater than the area above the baseline",
+                            "In PXT using a left posterior pathway, a predominantly positive QRS in aVR (negative in -aVR) can occur but positive initial R waves (q waves in -aVR) are rare"
+                        ],
+                        yesResult: "VT",
+                        noResult: "continue"
+                    },
+                    {
+                        question: "Is there a QR complex in one or more of leads V2-V6?",
+                        criteria: [
+
+                            "QR pattern suggests ventricular origin"
+                        ],
+                        yesResult: "VT",
+                        noResult: "continue"
+                    },
+                    {
+                        question: "Are there predominantly negative QRS complexes in leads V4-V6?",
+                        criteria: [
+                            "Preexcited SVT occurs through an accessory pathway at the base of the ventricles with a resulting vector directed towards the apex",
+                            "Ventricular activation from apex to base indicates VT",
+                            "If no criteria are fulfilled → Pre-excited tachycardia",
+                            "If any of the criteria are fulfilled → VT"
+                        ],
+                        yesResult: "VT",
+                        noResult: "Pre-excited SVT"
+                    }
+                ]
             }
         };
 
         let currentAlgorithm = null;
         let skippedSteps = [];
+        let yesAnswers = []; // Track which steps had "Yes" answers
 
         function selectAlgorithm(algorithmName) {
+            // Check if algorithm exists
+            if (!algorithms[algorithmName]) {
+                console.error('Algorithm not found:', algorithmName);
+                return;
+            }
+
             // Hide all algorithm interfaces
             document.querySelectorAll('.algorithm-interface').forEach(el => {
                 el.classList.remove('active');
@@ -518,22 +589,37 @@
             event.target.closest('.algorithm-card').classList.add('selected');
 
             // Show selected algorithm interface
-            document.getElementById(algorithmName).classList.add('active');
+            const algorithmInterface = document.getElementById(algorithmName);
+            if (algorithmInterface) {
+                algorithmInterface.classList.add('active');
+            } else {
+                console.error('Algorithm interface not found:', algorithmName);
+                return;
+            }
 
             // Initialize the algorithm
             currentAlgorithm = algorithmName;
             algorithms[algorithmName].currentStep = 1;
             skippedSteps = [];
+            yesAnswers = []; // Reset yes answers tracking
             
             loadStep();
         }
 
         function loadStep() {
-            if (!currentAlgorithm) return;
+            if (!currentAlgorithm || !algorithms[currentAlgorithm]) {
+                console.error('Invalid algorithm:', currentAlgorithm);
+                return;
+            }
 
             const algo = algorithms[currentAlgorithm];
             const step = algo.steps[algo.currentStep - 1];
             const contentDiv = document.getElementById(currentAlgorithm + '-content');
+
+            if (!contentDiv) {
+                console.error('Content div not found for algorithm:', currentAlgorithm);
+                return;
+            }
 
             // Update step counter and progress
             const stepSpan = document.getElementById(currentAlgorithm + '-step');
@@ -587,50 +673,45 @@
 
             if (answer === 'skip') {
                 skippedSteps.push(algo.currentStep);
-                if (algo.currentStep < algo.totalSteps) {
-                    algo.currentStep++;
-                    loadStep();
-                } else {
-                    showResult('Inconclusive - too many steps skipped');
-                }
-                return;
+            } else if (answer === 'yes') {
+                yesAnswers.push(algo.currentStep);
             }
 
-            let result = null;
-            if (answer === 'yes') {
-                result = step.yesResult;
+            // Always continue to next step until all steps are completed
+            if (algo.currentStep < algo.totalSteps) {
+                algo.currentStep++;
+                loadStep();
             } else {
-                result = step.noResult;
-            }
-
-            if (result === 'VT' || result === 'SVT') {
-                showResult(result);
-            } else if (result === 'continue') {
-                if (algo.currentStep < algo.totalSteps) {
-                    algo.currentStep++;
-                    loadStep();
-                } else {
-                    showResult('SVT'); // Default for most algorithms
-                }
+                // All steps completed, show final result
+                showFinalResult();
             }
         }
 
-        function showResult(diagnosis) {
+        function showFinalResult() {
             const contentDiv = document.getElementById(currentAlgorithm + '-content');
-            let resultClass = diagnosis === 'VT' ? 'vt' : 'svt';
-            let resultText = '';
-            let confidence = '';
+            let resultClass, resultText, confidence;
 
-            if (diagnosis === 'VT') {
-                resultText = 'Ventricular Tachycardia';
-                confidence = 'High likelihood of ventricular origin';
-            } else if (diagnosis === 'SVT') {
-                resultText = 'Supraventricular Tachycardia';
-                confidence = 'High likelihood of supraventricular origin with aberrancy';
-            } else {
+            // Check if all steps were skipped
+            if (skippedSteps.length === algorithms[currentAlgorithm].totalSteps) {
                 resultClass = '';
                 resultText = 'Inconclusive';
-                confidence = 'Consider additional clinical correlation';
+                confidence = 'All steps skipped - unable to determine diagnosis';
+            } else if (yesAnswers.length > 0) {
+                // Any "Yes" answer = VT
+                resultClass = 'vt';
+                resultText = 'Ventricular Tachycardia';
+                confidence = 'High likelihood of ventricular tachycardia';
+            } else {
+                // No "Yes" answers
+                if (currentAlgorithm === 'modified_brugada') {
+                    resultClass = 'svt';
+                    resultText = 'Supraventricular Tachycardia';
+                    confidence = 'High likelihood of supraventricular tachycardia, pre-excited SVT possible';
+                } else {
+                    resultClass = 'svt';
+                    resultText = 'Supraventricular Tachycardia';
+                    confidence = 'High likelihood of supraventricular tachycardia';
+                }
             }
 
             let skippedInfo = '';
@@ -638,10 +719,16 @@
                 skippedInfo = `<p style="margin-top: 15px; color: #2c3e50;">Note: Steps ${skippedSteps.join(', ')} were skipped</p>`;
             }
 
+            let yesInfo = '';
+            if (yesAnswers.length > 0) {
+                yesInfo = `<p style="margin-top: 15px; color: #2c3e50;">Positive criteria found in step(s): ${yesAnswers.join(', ')}</p>`;
+            }
+
             contentDiv.innerHTML = `
                 <div class="result ${resultClass}">
                     <h2>${resultText}</h2>
                     <p>${confidence}</p>
+                    ${yesInfo}
                     ${skippedInfo}
                 </div>
                 <div class="navigation" style="justify-content: center; margin-top: 30px;">
@@ -658,9 +745,15 @@
             if (algo.currentStep > 1) {
                 algo.currentStep--;
                 // Remove from skipped steps if going back
-                const index = skippedSteps.indexOf(algo.currentStep);
-                if (index > -1) {
-                    skippedSteps.splice(index, 1);
+                const skipIndex = skippedSteps.indexOf(algo.currentStep);
+                if (skipIndex > -1) {
+                    skippedSteps.splice(skipIndex, 1);
+                }
+                
+                // Remove from yes answers if going back
+                const yesIndex = yesAnswers.indexOf(algo.currentStep);
+                if (yesIndex > -1) {
+                    yesAnswers.splice(yesIndex, 1);
                 }
                 loadStep();
             }
@@ -671,6 +764,7 @@
             
             algorithms[currentAlgorithm].currentStep = 1;
             skippedSteps = [];
+            yesAnswers = []; // Reset yes answers tracking
             loadStep();
         }
 
@@ -687,6 +781,7 @@
 
             currentAlgorithm = null;
             skippedSteps = [];
+            yesAnswers = []; // Reset yes answers tracking
         }
 
         // Initialize the application
